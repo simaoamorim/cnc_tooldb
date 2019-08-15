@@ -8,4 +8,4 @@ what makes this project tick.
 # License
 
 All the documentation is released under the **MIT license**. For more<br>
-information please refer to the [LICENSE/](LICENSE) file.
+information please refer to the [/LICENSE](/LICENSE) file.
