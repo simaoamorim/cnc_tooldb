@@ -1,4 +1,9 @@
 # Features
+
+The following list of features is incremental, except when stated otherwise.<br>
+
+## Version: 1.0.0
+
 1. Manage machines in DB
     - Add new machine
     - Remove existing machine
