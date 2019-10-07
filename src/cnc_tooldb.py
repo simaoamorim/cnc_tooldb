@@ -7,6 +7,7 @@ import wx
 import wx.dataview
 import gui
 from wx.adv import AboutBox, AboutDialogInfo
+import sqlite3_handler as sql
 
 
 class MainFrame(gui.MainFrame):
@@ -24,13 +25,24 @@ class MainFrame(gui.MainFrame):
         self.info.SetDevelopers([u"Simão Amorim (simao_amorim@outlook.pt)"])
         # Initialize the window
         super().__init__(parent=None, title=self.info.GetName()+" "+self.info.GetVersion())
+        self.DB = sql.DB()
         self.init_binds()
+        self.update_chooser()
         self.Show()
 
     def init_binds(self):
         """Bind GUI events to the appropriate handler methods"""
         self.Bind(wx.EVT_MENU, self.menubar_handler, self.menu_bar)
-        pass
+        self.Bind(wx.EVT_CHOICE, self.set_machine, self.machine_chooser)
+
+    def update_chooser(self):
+        for item in self.DB.get_machines():
+            self.machine_chooser.Append(item)
+
+    def set_machine(self, event):
+        temp_id = event.GetId()
+        if temp_id == self.machine_chooser.Id:
+            print("Choice: %s" % self.machine_chooser.GetStringSelection())
 
     def menubar_handler(self, event):
         """Method to handle events from the menu bar in the main frame"""
