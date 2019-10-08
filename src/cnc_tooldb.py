@@ -29,8 +29,8 @@ class MainFrame(gui.MainFrame):
 
     def init_binds(self):
         """Bind GUI events to the appropriate handler methods"""
-        self.Bind(wx.EVT_MENU, self.menubar_handler, self.menu_bar)
-        pass
+        self.Bind(wx.EVT_MENU, self.menubar_handler)
+        self.Bind(wx.EVT_BUTTON, self.button_handler)
 
     def menubar_handler(self, event):
         """Method to handle events from the menu bar in the main frame"""
@@ -40,6 +40,11 @@ class MainFrame(gui.MainFrame):
         elif temp_id == self.help_menu_about.Id:
             AboutBox(info=self.info, parent=self, )
         event.StopPropagation()
+
+    def button_handler(self, event):
+        temp_id = event.GetId()
+        if temp_id == self.machine_add_btn.Id:
+            print('Add new machine')
 
 
 if __name__ == '__main__':
