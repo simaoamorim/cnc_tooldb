@@ -25,6 +25,7 @@ class MainFrame(gui.MainFrame):
         self.info.AddDeveloper(f"Simão Amorim (simao_amorim@outlook.pt)")
         # Initialize the window
         super().__init__(parent=None, title=f"{self.info.GetName()} {self.info.GetVersion()}")
+        self.machine = None
         self.DB = sql.DB()
         self.init_binds()
         self.update_chooser()
@@ -40,9 +41,14 @@ class MainFrame(gui.MainFrame):
             self.machine_chooser.Append(item)
 
     def set_machine(self, event):
-        temp_id = event.GetId()
-        if temp_id == self.machine_chooser.Id:
-            print(f"Choice: {self.machine_chooser.GetStringSelection()}")
+        """Method to hande the choice of the machine"""
+        event.StopPropagation()
+        self.machine = self.machine_chooser.GetStringSelection()
+        print(f"Choice: {self.machine}")
+        self.update_config_table()
+
+    def update_config_table(self):
+        pass
 
     def menubar_handler(self, event):
         """Method to handle events from the menu bar in the main frame"""

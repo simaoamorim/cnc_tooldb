@@ -41,7 +41,7 @@ class MainFrame(wx.Frame):
         self.m_staticText1 = wx.StaticText(self.m_panel1, wx.ID_ANY, u"Machine:", wx.DefaultPosition,
                                            wx.DefaultSize, wx.ALIGN_RIGHT)
         self.m_staticText1.Wrap(0)
-        b_sizer4.Add(self.m_staticText1, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
+        b_sizer4.Add(self.m_staticText1, 0, wx.ALIGN_CENTER | wx.ALL, 5)
         machine_chooser_choices = []
         self.machine_chooser = wx.Choice(self.m_panel1, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize,
                                          machine_chooser_choices, wx.CB_SORT)
@@ -49,7 +49,7 @@ class MainFrame(wx.Frame):
         self.machine_chooser.SetMinSize(wx.Size(150, -1))
         b_sizer4.Add(self.machine_chooser, 0, wx.ALL | wx.EXPAND, 5)
         b_sizer4.Add((0, 0), 1, 0, 5)
-        b_sizer9.Add(b_sizer4, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALL | wx.EXPAND, 5)
+        b_sizer9.Add(b_sizer4, 0, wx.ALIGN_CENTER | wx.ALL, 5)
         b_sizer20 = wx.BoxSizer(wx.VERTICAL)
         self.config_control = wx.dataview.DataViewListCtrl(self.m_panel1,
                                                            wx.ID_ANY,
