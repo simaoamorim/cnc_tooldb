@@ -39,16 +39,22 @@ class MainFrame(gui.MainFrame):
     def update_chooser(self):
         for item in self.DB.get_machines():
             self.machine_chooser.Append(item)
+        self.machine_chooser.SetSelection(0)
+        self.machine = self.machine_chooser.GetStringSelection()
+        self.update_config_table()
 
     def set_machine(self, event):
-        """Method to hande the choice of the machine"""
+        """Method to handle the choice of the machine"""
         event.StopPropagation()
         self.machine = self.machine_chooser.GetStringSelection()
         print(f"Choice: {self.machine}")
         self.update_config_table()
 
     def update_config_table(self):
-        pass
+        self.config_control.DeleteAllItems()
+        for item in self.DB.get_machine_config(machine=self.machine):
+            print(f"Values: {item[0]}")
+            self.config_control.AppendItem(item)
 
     def menubar_handler(self, event):
         """Method to handle events from the menu bar in the main frame"""

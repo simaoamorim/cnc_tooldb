@@ -41,7 +41,19 @@ class DB(object):
     def get_machines(self, cur=None):
         if cur is None:
             cur = self.cur
-        return cur.execute("SELECT name FROM machine")
+        return cur.execute("""SELECT name FROM machine""")
+
+    def get_machine_config(self, machine=None, cur=None):
+        if machine is None:
+            return None
+        if cur is None:
+            cur = self.cur
+        return cur.execute(f"""SELECT tool.comment, parameters.Xval, 
+                                parameters.Yval, parameters.Zval
+                                FROM parameters
+                                INNER JOIN machine ON parameters.IDMachine = machine.ID 
+                                INNER JOIN tool ON parameters.IDTool = tool.ID
+                                WHERE machine.name = '{machine}'""")
 
     def __del__(self):
         """Close the database connection and exit"""
