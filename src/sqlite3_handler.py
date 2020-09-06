@@ -1,14 +1,31 @@
 #!/usr/bin/env python3
 """
-Python module that handles the connection and actions to the local database
+Persistent data handler.
+
+Defines the needed transactions to the local database, with simple
+data validation.
 """
 import os.path
 import sqlite3 as sql
 
 
 class DB(object):
+    """
+    Database access object for persistent tool data storage.
+
+    Allows multiple machine and tool definitions, able to set values
+    for each possible combination of (machine, tool).
+
+    E.g. tool #123 can have values set for machines _A_ and _B_, simultaneously.
+    """
     def __init__(self, dbname='database.db'):
-        """Initialize the connection to the database and, if it doesn't exist, create the necessary tables"""
+        """
+        Initialize the connection to the database.
+
+        If the specified one doesn't exist (including the default 'database.db'),
+        a new one will be created and initialized with the required table
+        structure.
+        """
         if os.path.isfile(dbname):
             self.db_exists = True
         else:
@@ -18,26 +35,41 @@ class DB(object):
             self.init_db()
 
     def add_machine(self, name: str):
+        """
+        Insert a new machine definition into the database.
+
+        The machine ID is automatically set by the SQLite autoincrement feature.
+        """
         if name == '':
             raise ValueError
         status = self.conn.execute(
             "INSERT INTO machine(name) VALUES (:name)",
             {'name': name}
         )
-        self.conn.commit()  # Save to file
+        self.conn.commit()  # Save changes to file
         if status.rowcount < 1:
             return -2
         return 0
 
     def get_machines(self):
+        """
+        Get list of machines saved in the database
+        """
         return self.conn.execute("SELECT name FROM machine")
 
     def __del__(self):
-        """Close the database connection and exit"""
+        """
+        Close the database connection on object deletion
+        """
         self.conn.close()
 
     def init_db(self):
-        """Create the needed tables in the new database file"""
+        """
+        Initialize database with the needed tables.
+
+        Tables 'machine', 'tool' and 'parameters' are generated,
+        with the configuration described in docs/db/cnc_tooldb_schema.svg
+        """
         self.conn.execute(
             '''
             CREATE TABLE machine (
@@ -68,4 +100,4 @@ class DB(object):
             '''
         )
         self.conn.commit()
-        # Need to use commit() to save changes, otherwise these are only local
+        # Need to use commit() to persistently save changes.
