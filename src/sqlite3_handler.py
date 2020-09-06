@@ -43,7 +43,7 @@ class DB(object):
         if name == '':
             raise ValueError
         status = self.conn.execute(
-            "INSERT INTO machine(name) VALUES (:name)",
+            "INSERT INTO machine(name) VALUES (:name);",
             {'name': name}
         )
         self.conn.commit()  # Save changes to file
@@ -55,7 +55,7 @@ class DB(object):
         """
         Get list of machines saved in the database
         """
-        return self.conn.execute("SELECT name FROM machine")
+        return self.conn.execute("SELECT name FROM machine;")
 
     def __del__(self):
         """
