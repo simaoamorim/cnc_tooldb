@@ -9,7 +9,7 @@ import os.path
 import sqlite3 as sql
 
 
-class DB(object):
+class DB(sql.Connection):
     """
     Database access object for persistent tool data storage.
 
@@ -27,11 +27,12 @@ class DB(object):
         structure.
         """
         if os.path.isfile(dbname):
-            self.db_exists = True
+            self.isNew = False
         else:
-            self.db_exists = False
-        self.conn = sql.connect(dbname)
-        if not self.db_exists:
+            self.isNew = True
+        super().__init__(dbname)
+        self.conn = self
+        if self.isNew:
             self.init_db()
 
     def add_machine(self, name: str):
