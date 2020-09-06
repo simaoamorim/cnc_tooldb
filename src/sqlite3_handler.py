@@ -35,7 +35,7 @@ class DB(sql.Connection):
         if self.isNew:
             self.init_db()
 
-    def add_machine(self, name: str):
+    def add_machine(self, name: str) -> None:
         """
         Insert a new machine definition into the database.
 
@@ -52,7 +52,7 @@ class DB(sql.Connection):
             raise self.AlreadyExists("Machine '%s' already exists" % name)
         self.conn.commit()  # Save changes to file
 
-    def get_machines(self):
+    def get_machines(self) -> sql.Cursor:
         """
         Get list of machines saved in the database
         """
@@ -64,7 +64,7 @@ class DB(sql.Connection):
         """
         self.conn.close()
 
-    def init_db(self):
+    def init_db(self) -> None:
         """
         Initialize database with the needed tables.
 
