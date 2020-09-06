@@ -4,6 +4,11 @@
 on your CNC machines and then export a list of desired tools to <br>
 automatically update the tool table on the CNC machine. <br>
 
+# WARNING
+
+**This README is outdated, please be patient as I will update it
+as soon as I can.**
+
 # Installation
 
 This tool is written in Python so all you need to start using this tool the <br>

@@ -21,21 +21,35 @@ class DB(object):
 
     def init_db(self):
         """Create the needed tables in the new database file"""
-        self.cur.execute('''CREATE TABLE machine (ID INTEGER PRIMARY KEY, name VARCHAR(100));''')
-        self.cur.execute('''CREATE TABLE tool (ID INTEGER PRIMARY KEY, comment VARCHAR(100));''')
-        self.cur.execute('''
-                            CREATE TABLE parameters (
-                                IDMachine INTEGER NOT NULL,
-                                IDTool INTEGER NOT NULL,
-                                comment VARCHAR(100),
-                                Xval REAL,
-                                Yval REAL,
-                                Zval REAL,
-                                FOREIGN KEY (IDMachine) REFERENCES machine(ID) ON UPDATE CASCADE ON DELETE CASCADE,
-                                FOREIGN KEY (IDTool) REFERENCES tool(ID) ON UPDATE CASCADE ON DELETE CASCADE,
-                                PRIMARY KEY (IDMachine, IDTool) 
-                            );
-                        ''')
+        self.cur.execute(
+            '''
+            CREATE TABLE machine (
+                ID INTEGER PRIMARY KEY,
+                name VARCHAR
+            );
+            '''
+        )
+        self.cur.execute(
+            '''
+            CREATE TABLE tool (
+                ID INTEGER PRIMARY KEY,
+                comment VARCHAR
+            );
+            '''
+        )
+        self.cur.execute(
+            '''
+            CREATE TABLE parameters (
+                IDMachine INTEGER REFERENCES machine(ID)
+                    ON UPDATE CASCADE ON DELETE CASCADE,
+                IDTool INTEGER REFERENCES tool(ID)
+                    ON UPDATE CASCADE ON DELETE CASCADE,
+                comment VARCHAR,
+                Offset_Z REAL,
+                PRIMARY KEY (IDMachine, IDTool)
+            );
+            '''
+        )
         self.conn.commit()
 
     def get_machines(self, cur=None):
