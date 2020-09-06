@@ -17,6 +17,13 @@ class DB(object):
         if not self.db_exists:
             self.init_db()
 
+    def get_machines(self):
+        return self.conn.execute("SELECT name FROM machine")
+
+    def __del__(self):
+        """Close the database connection and exit"""
+        self.conn.close()
+
     def init_db(self):
         """Create the needed tables in the new database file"""
         self.conn.execute(
@@ -49,10 +56,3 @@ class DB(object):
             '''
         )
         self.conn.commit()
-
-    def get_machines(self):
-        return self.cur.execute("SELECT name FROM machine")
-
-    def __del__(self):
-        """Close the database connection and exit"""
-        self.conn.close()
