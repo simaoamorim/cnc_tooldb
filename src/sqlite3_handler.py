@@ -14,14 +14,12 @@ class DB(object):
         else:
             self.db_exists = False
         self.conn = sql.connect(dbname)
-        self.cur = self.conn.cursor()
-        assert self.cur.connection == self.conn
         if not self.db_exists:
             self.init_db()
 
     def init_db(self):
         """Create the needed tables in the new database file"""
-        self.cur.execute(
+        self.conn.execute(
             '''
             CREATE TABLE machine (
                 ID INTEGER PRIMARY KEY,
@@ -29,7 +27,7 @@ class DB(object):
             );
             '''
         )
-        self.cur.execute(
+        self.conn.execute(
             '''
             CREATE TABLE tool (
                 ID INTEGER PRIMARY KEY,
@@ -37,7 +35,7 @@ class DB(object):
             );
             '''
         )
-        self.cur.execute(
+        self.conn.execute(
             '''
             CREATE TABLE parameters (
                 IDMachine INTEGER REFERENCES machine(ID)
