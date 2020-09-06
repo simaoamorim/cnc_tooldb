@@ -43,14 +43,14 @@ class DB(sql.Connection):
         """
         if name == '':
             raise ValueError
-        status = self.conn.execute(
-            "INSERT INTO machine(name) VALUES (:name);",
-            {'name': name}
-        )
+        try:
+            self.conn.execute(
+                "INSERT INTO machine(name) VALUES (:name);",
+                {'name': name}
+            )
+        except self.IntegrityError:
+            raise self.AlreadyExists("Machine '%s' already exists" % name)
         self.conn.commit()  # Save changes to file
-        if status.rowcount < 1:
-            return -2
-        return 0
 
     def get_machines(self):
         """
@@ -74,8 +74,7 @@ class DB(sql.Connection):
         self.conn.execute(
             '''
             CREATE TABLE machine (
-                ID INTEGER PRIMARY KEY,
-                name VARCHAR
+                name VARCHAR PRIMARY KEY
             );
             '''
         )
@@ -102,3 +101,6 @@ class DB(sql.Connection):
         )
         self.conn.commit()
         # Need to use commit() to persistently save changes.
+
+    class AlreadyExists(BaseException):
+        pass
