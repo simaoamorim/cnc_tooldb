@@ -17,6 +17,18 @@ class DB(object):
         if not self.db_exists:
             self.init_db()
 
+    def add_machine(self, name: str):
+        if name == '':
+            raise ValueError
+        status = self.conn.execute(
+            "INSERT INTO machine(name) VALUES (:name)",
+            {'name': name}
+        )
+        self.conn.commit()  # Save to file
+        if status.rowcount < 1:
+            return -2
+        return 0
+
     def get_machines(self):
         return self.conn.execute("SELECT name FROM machine")
 
@@ -56,3 +68,4 @@ class DB(object):
             '''
         )
         self.conn.commit()
+        # Need to use commit() to save changes, otherwise these are only local
