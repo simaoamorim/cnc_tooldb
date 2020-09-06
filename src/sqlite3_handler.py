@@ -52,10 +52,8 @@ class DB(object):
         )
         self.conn.commit()
 
-    def get_machines(self, cur=None):
-        if cur is None:
-            cur = self.cur
-        return cur.execute("SELECT name FROM machine")
+    def get_machines(self):
+        return self.cur.execute("SELECT name FROM machine")
 
     def __del__(self):
         """Close the database connection and exit"""
